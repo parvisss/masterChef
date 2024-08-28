@@ -102,13 +102,10 @@ class CreateAccountScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: () {
-                              // Google sign-in action
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.black,
-                              backgroundColor:
-                                  const Color.fromARGB(255, 92, 144, 150),
+                              backgroundColor: const Color(0xFFD5EEEE),
                               padding:
                                   const EdgeInsets.symmetric(vertical: 14.0),
                               shape: RoundedRectangleBorder(
@@ -124,13 +121,10 @@ class CreateAccountScreen extends StatelessWidget {
                         const SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: () {
-                              // Apple sign-in action
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.black,
-                              backgroundColor:
-                                  const Color.fromARGB(255, 92, 144, 150),
+                              backgroundColor: const Color(0xFFD5EEEE),
                               padding:
                                   const EdgeInsets.symmetric(vertical: 14.0),
                               shape: RoundedRectangleBorder(

@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe_app/ui/screens/auth/forgot_password_verification.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -89,33 +90,35 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                FadeInUp(
-                  delay: const Duration(milliseconds: 500),
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState?.validate() == true) {}
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(350, 40),
-                        backgroundColor: const Color(0xff3FB4B1),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
               ],
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton: FadeInUp(
+        delay: const Duration(milliseconds: 500),
+        child: ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState?.validate() == true) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (ctx) => const VerificationMethodScreen()));
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(218, 60),
+            backgroundColor: const Color(0xff3FB4B1),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text(
+            'Next',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
             ),
           ),
         ),
