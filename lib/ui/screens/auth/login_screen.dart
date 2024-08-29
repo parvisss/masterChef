@@ -1,6 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe_app/bloc/auth/auth_bloc.dart';
+import 'package:recipe_app/bloc/auth/auth_events.dart';
+import 'package:recipe_app/bloc/auth/auth_state.dart';
 import 'package:recipe_app/ui/screens/auth/forget_password.dart';
+import 'package:recipe_app/ui/screens/auth/register_screen.dart';
+import 'package:recipe_app/ui/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,7 +53,12 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) => const RegisterScreen()));
+                      },
                       child: const Text(
                         'Register',
                         style: TextStyle(
@@ -119,7 +130,11 @@ class LoginScreenState extends State<LoginScreen> {
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.visibility_off),
                         onPressed: () {
-                          // Toggle password visibility
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) => const RegisterScreen(),
+                              ));
                         },
                       ),
                       border: OutlineInputBorder(
@@ -169,24 +184,51 @@ class LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() == true) {}
+              BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthLoading) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) =>
+                          const Center(child: CircularProgressIndicator()),
+                    );
+                  } else if (state is AuthAuthenticated) {
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => const HomeScreen()),
+                    );
+                  } else if (state is AuthError) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40),
-                  backgroundColor: const Color(0xff3FB4B1),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() == true) {
+                      context.read<AuthBloc>().add(LoginEvent(
+                          email: _emailController.text,
+                          password: _passwordController.text));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(40),
+                    backgroundColor: const Color(0xff3FB4B1),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),
